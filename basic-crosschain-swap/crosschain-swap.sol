@@ -1,5 +1,14 @@
 pragma solidity ^0.5.6;
 
+/**
+* This is a basic Payable contract to facilitate the transfer of assets between 2 trusted parties between 2 EVM Compatible chains
+* @author Patrick O'Sullivan
+* @param _beneficiary Address is the other persons address with who you wish to swap an asset with
+* @param _digest Bytes32 is the keccak256 hash digest. Each party must enter the same pre-image in order to unlock the funds
+* @param _beneficiaryName string The name of the person or an identifier, not strickly necessary
+* @param _chain string the name/identifier of the chain which this operation takes place
+ */
+
 contract XChainSwap {
 
     string public version = "0.0.3";
