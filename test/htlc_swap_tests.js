@@ -3,29 +3,30 @@ const BigNumber = web3.BigNumber;
 
 const XChainSwap = artifacts.require('XChainSwap');
 
-var accounts = web3.eth.getAccounts();
-
-require('chai')
-    .use(require('chai-bignumber')(BigNumber))
-    .should();
-    
-// let catchRevert = require("./exceptions.js").catchRevert;    
+const accounts = web3.eth.getAccounts();
 
 const truffleAssert = require('truffle-assertions');
 
+require('chai')
+    .use(require('chai-bignumber')(BigNumber))
+    .should(); 
+
+
+
 contract('XChainSwap', accounts => {
 
-    const _beneficiary     = accounts[0];
-    const _digestString    = "reptilehaus";
-    const _wrongDigest = "reptilehau2s"
-    const _digestHash      = web3.utils.soliditySha3(_digestString)
-    const _digest          = web3.utils.hexToBytes(_digestHash);
-    const _beneficiaryName = "Clive Wright";
-    const _chain           = "REPTILEUM"
+    const _liquidityProvider = accounts[0];    
+    const _beneficiary       = accounts[1];
+    const _digestString      = "reptilehaus";
+    const _wrongDigest       = "reptilehaus_wrong_digest"
+    const _digestHash        = web3.utils.soliditySha3(_digestString)
+    const _digest            = web3.utils.hexToBytes(_digestHash);
+    const _beneficiaryName   = "Clive Wright";
+    const _chain             = "REPTILEUM"
 
     beforeEach( async function () {
         this.swap = await XChainSwap.new( _beneficiary, _digest, _beneficiaryName, _chain );
-        await this.swap.send(web3.utils.toWei(String(1), "ether"), { from: accounts[0]  });       
+        await this.swap.send(web3.utils.toWei(String(1), "ether"), { from: _liquidityProvider  });       
     });
 
     describe('swap attributes', function () {       
@@ -73,9 +74,9 @@ contract('XChainSwap', accounts => {
                 );
         });   
         
-        it('Confirm funds not released after correct pre-image hash but not the rightful beneficiary', async function () {
+        it('Confirm funds not released after correct pre-image hash but not the rightful beneficiary (contract owner/LP)', async function () {
             await truffleAssert.fails(
-                    this.swap.releaseFunds(_digestString, { from: accounts[4] }))
+                this.swap.releaseFunds(_digestString, { from: accounts[2] }))
                 ;
         });           
         
