@@ -1,0 +1,44 @@
+{
+  "name": "ico-irl",
+  "version": "1.0.0",
+  "description": "Real World ICO",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-bignumber": "^3.0.0",
+    "coveralls": "^3.0.3",
+    "dotenv": "^7.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "ethereumjs-util": "^6.1.0",
+    "ethjs-abi": "^0.2.1",
+    "ganache-cli": "6.4.1",
+    "openzeppelin-solidity": "2.2.0",
+    "solidity-coverage": "^0.5.11",
+    "solium": "^1.2.3",
+    "truffle": "5.0.10",
+    "truffle-hdwallet-provider": "1.0.6",
+    "web3-utils": "^1.0.0-beta.51"
+  },
+  "dependencies": {
+    "truffle-assertions": "^0.8.2"
+  }
+}

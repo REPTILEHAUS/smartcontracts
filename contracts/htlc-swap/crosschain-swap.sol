@@ -1,23 +1,22 @@
 pragma solidity ^0.5.6;
 
-/**
-* This is a basic Payable contract to facilitate the transfer of assets between 2 trusted parties between 2 EVM Compatible chains
-* @author Patrick O'Sullivan
-* @param _beneficiary Address is the other persons address with who you wish to swap an asset with
-* @param _digest Bytes32 is the keccak256 hash digest. Each party must enter the same pre-image in order to unlock the funds
-* @param _beneficiaryName string The name of the person or an identifier, not strickly necessary
-* @param _chain string the name/identifier of the chain which this operation takes place
- */
-
+/// @title Hashed Time Locked Contract for Atomic Swap - This is a basic Payable contract to facilitate the transfer of assets between 2 trusted parties between 2 EVM Compatible chains
+/// @author Patrick O'Sullivan
+// https://github.com/chatch/hashed-timelock-contract-ethereum/blob/master/contracts/HashedTimelock.sol
 contract XChainSwap {
+    
+/// @param _beneficiary Address is the other persons address with who you wish to swap an asset with
+/// @param _digest Bytes32 is the keccak256 hash digest. Each party must enter the same pre-image in order to unlock the funds
+/// @param _beneficiaryName string The name of the person or an identifier, not strickly necessary
+/// @param _chain string the name/identifier of the chain which this operation takes place
 
     string public version = "0.0.3";
     bytes32 public digest;
     address payable public beneficiary;
     uint public timeOut = now + 4 hours;
     address payable liquidityProvider = msg.sender;
-    string beneficiaryName;
-    string chain;
+    string public beneficiaryName;
+    string public chain;
     string hashError = "wrong hash preimage";
     string hashCorrect = "Funds transferred to beneficiary";
 
@@ -29,13 +28,12 @@ contract XChainSwap {
         require(msg.sender == liquidityProvider);
         _;
     }
-    modifier onlyCorrectPreImage(string memory _hash) {
-        require(digest ==  keccak256(bytes(_hash)));
-        emit WrongPreImage(hashError);
-        _;
-    }
 
-    constructor( address payable _beneficiary, bytes32 _digest, string memory _beneficiaryName, string memory _chain ) public {
+    constructor( 
+    address payable _beneficiary, 
+    bytes32 _digest, 
+    string memory _beneficiaryName, 
+    string memory _chain) public {
         digest            = _digest;
         liquidityProvider = msg.sender;
         beneficiary       = _beneficiary;
@@ -43,14 +41,16 @@ contract XChainSwap {
         chain             = _chain;
     }
 
-    function releaseFunds(string memory _hash)  onlyCorrectPreImage(_hash) public returns(bool result) {
+    function releaseFunds(string memory _hash)  public returns(bool result) {
+      require(digest == keccak256(bytes(_hash)), "Wrong Hash Supplied"); // hash should match the supplied hash digest
+      require(beneficiary == msg.sender, "Wrong Beneficiary");   // sender should be the designated beneficiary
        emit CorrectPreImage("Funds transferred to beneficiary");
        selfdestruct(beneficiary);
        return true;
     }
 
     function refundOwner() onlyLiquidityProvider public returns(bool result) {
-        require(now >= timeOut);
+        require(now <= timeOut);
         selfdestruct(liquidityProvider);
         return true;
     }
