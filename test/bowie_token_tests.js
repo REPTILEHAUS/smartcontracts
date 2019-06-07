@@ -56,7 +56,6 @@ contract('BowieToken', accounts => {
         it('has approved another account to spend tokens on its behalf', async function () {
             const approveAndCall = await this.erc20.approveAndCall(_approvedSpender, 1000000000, "0x0");
             truffleAssert.eventEmitted(approveAndCall, 'Approval', (ev) => {
-                // console.log("ASADASDASDAS ", ev.owner, ev.spender, ev.value);
                 return ev.owner === this.owner && ev.spender === _approvedSpender;
             });
         });
