@@ -1,4 +1,4 @@
-pragma solidity 0.5.9;
+pragma solidity ^0.5.2;
 
 import "../../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -19,10 +19,10 @@ contract BowieToken is Ownable, Pausable, ERC20 {
         _mint(msg.sender, _totalSupply);
     }
 
-    function approveAndCall(address _spender, uint256 _value, bytes memory _data) public returns (bool) {
+    function approveAndCall(address _spender, uint256 _value, bytes memory _extraData) public returns (bool) {
         require(_spender != address(this));
         require(super.approve(_spender, _value));
-        (bool success, )  = _spender.call(_data);
+        (bool success, )  = _spender.call(_extraData);
         require(success);
         return true;
     }    

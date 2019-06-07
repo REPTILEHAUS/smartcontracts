@@ -1,4 +1,4 @@
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.0;
 
 /// @title Hashed Time Locked Contract for Atomic Swap - This is a basic Payable contract to facilitate the transfer of assets between 2 trusted parties between 2 EVM Compatible chains
 /// @author Patrick O'Sullivan
